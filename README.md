@@ -2,7 +2,7 @@
 
 Run Qwen3.5 entirely on your iPhone. No cloud. No API keys. No subscriptions.
 
-<video src="https://github.com/carolinacherry/local-ai/raw/main/demo.mov" width="300" autoplay loop muted playsinline></video>
+https://github.com/carolinacherry/local-ai/releases/download/v1.0.0/qwen.4b.demo.final.mov
 
 > *iPhone 17 Pro, airplane mode, zero internet. 26 tok/s.*
 
@@ -38,10 +38,13 @@ All models are 4-bit quantized via [MLX](https://github.com/ml-explore/mlx-swift
 
 ## Requirements
 
-- iPhone 13 or later (iPhone 15 Pro or later for 9B model)
+- iPhone 15 Pro or later (8+ GB RAM) for the default 4B model
+- iPhone 15 Pro or later for the 9B model (requires 8 GB RAM)
 - iOS 17+
 - ~3 GB free storage for default model
 - WiFi for initial model download only
+
+> Tested on iPhone 17 Pro (12 GB RAM). Older devices may work with smaller models (0.8B, 2B) but are not guaranteed. For the best experience, use an iPhone with 8+ GB RAM.
 
 ## Setup
 
