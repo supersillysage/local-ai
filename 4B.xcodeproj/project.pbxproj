@@ -13,6 +13,8 @@
 		3155D4F27AD90D272A49B44A /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65F79F570AA779BFBE679B9C /* ChatView.swift */; };
 		334890A3224823C33C6D40E4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D040A1CA0247D00A49F6E432 /* ContentView.swift */; };
 		4530A4BE5E4D43EBDEF13F7F /* DownloadProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD1C149E98A067CCC78DDFA0 /* DownloadProgressView.swift */; };
+		4BD811B6ECCD062C72685269 /* ThinkingDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F80139A2C630C7B16C4EA18 /* ThinkingDetector.swift */; };
+		519425B5634C5119848F3A6D /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE6FBA5F018E571279EA718 /* SpeechRecognizer.swift */; };
 		6A4BFCDD539A96721AED7CFF /* SearchDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEFE10B4F85A8AF147B71B0F /* SearchDetector.swift */; };
 		6C9CE73B811888C744653FF5 /* MessageBubble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E49A4C8B40FEA35825198D /* MessageBubble.swift */; };
 		710D3872E7A148A6BF43DEBD /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = F547E2C6E1CB72403E1A83CF /* MLXLLM */; };
@@ -29,6 +31,8 @@
 
 /* Begin PBXFileReference section */
 		11E49A4C8B40FEA35825198D /* MessageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubble.swift; sourceTree = "<group>"; };
+		1AE6FBA5F018E571279EA718 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
+		2F80139A2C630C7B16C4EA18 /* ThinkingDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThinkingDetector.swift; sourceTree = "<group>"; };
 		5D47A84D4C4774D331CE7D2D /* ModelConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelConfig.swift; sourceTree = "<group>"; };
 		5E10D782057D92D3E30A0D56 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		613FF69513AE21F4B71E2A50 /* ModelPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelPicker.swift; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 				5D47A84D4C4774D331CE7D2D /* ModelConfig.swift */,
 				AB29A07C88A39423EB0675FE /* ModelManager.swift */,
 				EEFE10B4F85A8AF147B71B0F /* SearchDetector.swift */,
+				1AE6FBA5F018E571279EA718 /* SpeechRecognizer.swift */,
+				2F80139A2C630C7B16C4EA18 /* ThinkingDetector.swift */,
 				8E6DC456087C1D85CE86B2D6 /* WebSearchService.swift */,
 			);
 			path = Models;
@@ -203,6 +209,8 @@
 				748CE3FE14B1DDAF6BE12E4E /* OnboardingView.swift in Sources */,
 				6A4BFCDD539A96721AED7CFF /* SearchDetector.swift in Sources */,
 				07CF88FEF07A51B18CF4A8E9 /* SettingsView.swift in Sources */,
+				519425B5634C5119848F3A6D /* SpeechRecognizer.swift in Sources */,
+				4BD811B6ECCD062C72685269 /* ThinkingDetector.swift in Sources */,
 				BE6865BC5373FC490C3EE941 /* WebSearchService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -220,6 +228,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_GENERATION_MODE = GeneratedByXcode;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "4B uses the microphone for voice input to chat.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "4B uses on-device speech recognition to convert your voice to text.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -244,6 +254,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_GENERATION_MODE = GeneratedByXcode;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "4B uses the microphone for voice input to chat.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "4B uses on-device speech recognition to convert your voice to text.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (

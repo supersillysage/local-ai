@@ -4,12 +4,14 @@ struct SettingsView: View {
     @EnvironmentObject var modelManager: ModelManager
     @Environment(\.dismiss) var dismiss
     @AppStorage("appearanceMode") private var appearanceMode: Int = 0 // 0=system, 1=light, 2=dark
+    @AppStorage("thinkingEnabled") private var thinkingEnabled: Bool = true
     @State private var braveAPIKey: String = WebSearchService.loadAPIKey() ?? ""
 
     var body: some View {
         NavigationStack {
             List {
                 activeModelSection
+                thinkingSection
                 appearanceSection
                 modelLibrarySection
                 webSearchSection
@@ -59,6 +61,18 @@ struct SettingsView: View {
         }
     }
 
+    private var thinkingSection: some View {
+        Section {
+            Toggle("Thinking", isOn: $thinkingEnabled)
+        } header: {
+            Text("Reasoning")
+        } footer: {
+            Text(thinkingEnabled
+                ? "Shows reasoning stream before answering. Slower (~17 tok/s)."
+                : "Answers directly without reasoning. Faster (~30 tok/s).")
+        }
+    }
+
     private var modelLibrarySection: some View {
         Section("Model Library") {
             ForEach(AvailableModels.all) { model in
@@ -88,7 +102,7 @@ struct SettingsView: View {
         Section("About") {
             LabeledContent("Version", value: "1.0.0")
             LabeledContent("Built by", value: "@carolinacherry")
-            Link("GitHub", destination: URL(string: "https://github.com/carolinacherry/local-ai")!)
+            Link("GitHub", destination: URL(string: "https://github.com/carolinacherry/4B")!)
         }
     }
 }

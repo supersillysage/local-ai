@@ -5,6 +5,7 @@ struct ChatMessage: Identifiable {
     let id = UUID()
     let role: String
     var content: String
+    var thinkingContent: String?
     var stats: GenerationStats?
 }
 
@@ -22,6 +23,7 @@ struct ChatView: View {
     @State private var showSettings = false
     @State private var showHistory = false
     @State private var isSearching = false
+    @AppStorage("thinkingEnabled") private var thinkingEnabled: Bool = true
     @FocusState private var inputFocused: Bool
 
     var body: some View {
@@ -33,9 +35,6 @@ struct ChatView: View {
             inputBar
         }
         .background(Color(.systemBackground))
-        .onTapGesture {
-            inputFocused = false
-        }
         .sheet(isPresented: $showSettings) {
             SettingsView()
         }
@@ -100,6 +99,9 @@ struct ChatView: View {
                     activeConversationId = nil
                     messages.removeAll()
                     engine.output = ""
+                    engine.thinkingText = ""
+                    engine.answerText = ""
+                    engine.isThinking = false
                     engine.cancelGeneration()
                 } label: {
                     Image(systemName: "square.and.pencil")
@@ -172,19 +174,28 @@ struct ChatView: View {
                         }
 
                         if engine.isGenerating {
-                            if engine.output.isEmpty {
-                                ThinkingIndicator()
-                                    .id("streaming")
-                            } else {
-                                MessageBubble(
-                                    message: ChatMessage(
-                                        role: "assistant",
-                                        content: engine.output,
-                                        stats: nil
+                            VStack(alignment: .leading, spacing: 8) {
+                                if engine.activeThinkingMode {
+                                    ThinkingContainer(
+                                        thinkingText: engine.thinkingText,
+                                        isThinking: engine.isThinking
                                     )
-                                )
-                                .id("streaming")
+                                }
+
+                                let displayText = engine.activeThinkingMode ? engine.answerText : engine.output
+                                if !displayText.isEmpty {
+                                    MessageBubble(
+                                        message: ChatMessage(
+                                            role: "assistant",
+                                            content: displayText,
+                                            stats: engine.activeThinkingMode ? nil : engine.stats
+                                        )
+                                    )
+                                } else if !engine.activeThinkingMode {
+                                    ThinkingIndicator()
+                                }
                             }
+                            .id("streaming")
                         }
                     }
                     .padding(.horizontal, 16)
@@ -192,7 +203,13 @@ struct ChatView: View {
                 }
             }
             .scrollDismissesKeyboard(.interactively)
+            .onTapGesture {
+                inputFocused = false
+            }
             .onChange(of: engine.output) {
+                proxy.scrollTo("streaming", anchor: .bottom)
+            }
+            .onChange(of: engine.answerText) {
                 proxy.scrollTo("streaming", anchor: .bottom)
             }
             .onChange(of: messages.count) {
@@ -274,13 +291,15 @@ struct ChatView: View {
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return }
 
+        if speechRecognizer.isRecording {
+            speechRecognizer.stopRecording()
+        }
         inputFocused = false
         UIImpactFeedbackGenerator(style: .light).impactOccurred()
         messages.append(ChatMessage(role: "user", content: text))
         inputText = ""
 
         Task {
-            // Prefetch search results if needed (runs concurrently with model load)
             var searchContext: String?
             let shouldSearch = WebSearchService.hasAPIKey && SearchDetector.needsSearch(text)
             if shouldSearch { isSearching = true }
@@ -303,7 +322,8 @@ struct ChatView: View {
             isSearching = false
 
             let chatHistory = buildChatHistory(searchContext: searchContext)
-            engine.generate(messages: chatHistory)
+            let useThinking = thinkingEnabled && ThinkingDetector.needsThinking(text)
+            engine.generate(messages: chatHistory, maxTokens: searchContext != nil ? 1024 : 512, enableThinking: useThinking)
 
             while engine.isGenerating {
                 try? await Task.sleep(for: .milliseconds(100))
@@ -314,13 +334,28 @@ struct ChatView: View {
     }
 
     private func finalizeAssistantMessage() {
-        guard !engine.output.isEmpty else { return }
-        messages.append(ChatMessage(
-            role: "assistant",
-            content: engine.output,
-            stats: engine.stats
-        ))
+        if engine.activeThinkingMode {
+            let answer = engine.answerText
+            let thinking = engine.thinkingText.isEmpty ? nil : engine.thinkingText
+            guard !answer.isEmpty || thinking != nil else { return }
+            messages.append(ChatMessage(
+                role: "assistant",
+                content: answer,
+                thinkingContent: thinking,
+                stats: engine.stats
+            ))
+        } else {
+            guard !engine.output.isEmpty else { return }
+            messages.append(ChatMessage(
+                role: "assistant",
+                content: engine.output,
+                stats: engine.stats
+            ))
+        }
         engine.output = ""
+        engine.thinkingText = ""
+        engine.answerText = ""
+        engine.isThinking = false
         saveCurrentConversation()
     }
 
@@ -355,6 +390,9 @@ struct ChatView: View {
             messages = []
         }
         engine.output = ""
+        engine.thinkingText = ""
+        engine.answerText = ""
+        engine.isThinking = false
     }
 
     private func buildChatHistory(searchContext: String? = nil) -> [[String: String]] {
@@ -365,7 +403,7 @@ struct ChatView: View {
         var systemPrompt = "You are a helpful assistant running locally on an iPhone. Today is \(today). Answer directly and concisely. Never say you cannot access real-time data or the internet."
 
         if let context = searchContext {
-            systemPrompt += "\n\nYou have real-time web search results below. Use them to answer the user's question. Do not ignore these results. Cite sources.\n\n\(context)"
+            systemPrompt += "\n\nBelow are real-time web search results. You MUST use these results to answer the user's question. Base your answer on the search data — do not make up information. Include specific details (names, addresses, ratings, hours) from the results. Cite the source URL for key facts.\n\n\(context)"
         }
 
         var history: [[String: String]] = [

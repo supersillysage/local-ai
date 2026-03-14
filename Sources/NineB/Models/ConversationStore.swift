@@ -4,6 +4,7 @@ struct SavedMessage: Codable, Identifiable {
     let id: UUID
     let role: String
     var content: String
+    var thinkingContent: String?
     var tokensPerSecond: Double?
     var timeToFirstToken: Double?
     var totalTokens: Int?
@@ -12,6 +13,7 @@ struct SavedMessage: Codable, Identifiable {
         self.id = chatMessage.id
         self.role = chatMessage.role
         self.content = chatMessage.content
+        self.thinkingContent = chatMessage.thinkingContent
         self.tokensPerSecond = chatMessage.stats?.tokensPerSecond
         self.timeToFirstToken = chatMessage.stats?.timeToFirstToken
         self.totalTokens = chatMessage.stats?.totalTokens
@@ -25,7 +27,7 @@ struct SavedMessage: Codable, Identifiable {
     }
 
     func toChatMessage() -> ChatMessage {
-        ChatMessage(role: role, content: content, stats: stats)
+        ChatMessage(role: role, content: content, thinkingContent: thinkingContent, stats: stats)
     }
 }
 

@@ -29,7 +29,7 @@ actor WebSearchService {
         guard let apiKey = Self.loadAPIKey() else { return [] }
 
         guard let encoded = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let url = URL(string: "https://api.search.brave.com/res/v1/web/search?q=\(encoded)&count=5") else {
+              let url = URL(string: "https://api.search.brave.com/res/v1/web/search?q=\(encoded)&count=5&extra_snippets=true") else {
             return []
         }
 
@@ -54,7 +54,10 @@ actor WebSearchService {
         return results.prefix(5).compactMap { item in
             guard let title = item["title"] as? String,
                   let url = item["url"] as? String else { return nil }
-            let snippet = item["description"] as? String ?? ""
+            var snippet = item["description"] as? String ?? ""
+            if let extras = item["extra_snippets"] as? [String], !extras.isEmpty {
+                snippet += " " + extras.joined(separator: " ")
+            }
             return SearchResult(title: title, url: url, snippet: snippet)
         }
     }

@@ -33,6 +33,10 @@ struct MessageBubble: View {
 
     private var assistantBubble: some View {
         VStack(alignment: .leading, spacing: 4) {
+            if let thinking = message.thinkingContent, !thinking.isEmpty {
+                ThinkingContainer(thinkingText: thinking, isThinking: false)
+            }
+
             if !message.content.isEmpty {
                 Text(LocalizedStringKey(message.content))
                     .font(.system(size: 15))
@@ -63,6 +67,112 @@ struct MessageBubble: View {
                 }
             }
         }
+    }
+}
+
+struct ThinkingContainer: View {
+    let thinkingText: String
+    let isThinking: Bool
+
+    @State private var isExpanded = false
+    @State private var copied = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isExpanded.toggle()
+                }
+            } label: {
+                HStack(spacing: 6) {
+                    if isThinking {
+                        ThinkingPulse()
+                    } else {
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 11))
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Text(isThinking ? "Thinking..." : "Thought")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundStyle(isThinking ? .primary : .secondary)
+
+                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 9, weight: .medium))
+                        .foregroundStyle(.tertiary)
+
+                    Spacer()
+
+                    if !isThinking && !thinkingText.isEmpty {
+                        Button {
+                            UIPasteboard.general.string = thinkingText
+                            withAnimation(.easeInOut(duration: 0.2)) { copied = true }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                withAnimation(.easeInOut(duration: 0.2)) { copied = false }
+                            }
+                        } label: {
+                            Image(systemName: copied ? "checkmark" : "doc.on.doc")
+                                .font(.system(size: 10))
+                                .foregroundStyle(copied ? .green : Color(.systemGray3))
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+            }
+            .buttonStyle(.plain)
+
+            if isExpanded && !thinkingText.isEmpty {
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text(thinkingText)
+                                .font(.system(size: 13))
+                                .foregroundStyle(.secondary)
+                                .padding(.horizontal, 12)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            Color.clear
+                                .frame(height: 1)
+                                .id("thinkingBottom")
+                        }
+                        .padding(.bottom, 10)
+                    }
+                    .frame(maxHeight: isThinking ? 120 : 400)
+                    .onChange(of: thinkingText) {
+                        if isThinking {
+                            proxy.scrollTo("thinkingBottom", anchor: .bottom)
+                        }
+                    }
+                }
+            }
+        }
+        .background(Color(.systemGray6).opacity(0.7))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .onAppear {
+            isExpanded = isThinking
+        }
+        .onChange(of: isThinking) { _, newValue in
+            if !newValue && isExpanded {
+                withAnimation(.easeInOut(duration: 0.3).delay(0.5)) {
+                    isExpanded = false
+                }
+            }
+        }
+    }
+}
+
+struct ThinkingPulse: View {
+    @State private var isPulsing = false
+
+    var body: some View {
+        Image(systemName: "sparkles")
+            .font(.system(size: 11))
+            .foregroundStyle(.blue)
+            .opacity(isPulsing ? 0.3 : 1.0)
+            .animation(.easeInOut(duration: 0.7).repeatForever(autoreverses: true), value: isPulsing)
+            .onAppear { isPulsing = true }
     }
 }
 
