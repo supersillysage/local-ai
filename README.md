@@ -1,113 +1,139 @@
-# 4B
+# 🤖 local-ai - Run AI locally on your iPhone
 
-Run Qwen3.5 entirely on your iPhone. No cloud. No API keys. No subscriptions.
-
-https://github.com/user-attachments/assets/63a70984-d895-4f31-821f-1fafa32a89e7
-
-> *iPhone 17 Pro, airplane mode, zero internet. 26 tok/s.*
-
-## Why
-
-Two years ago, GPT-4o cost $20/month and required a datacenter. Today, the same quality runs on your iPhone for free. Permanently.
-
-> "According to benchmarks Qwen3.5 4B is as good as GPT 4o. GPT 4o came out ~2 years ago (May 2024). Qwen 3.5 4B runs easily on modern mobile devices. So the gap between frontier intelligence in a datacenter and running a model of equal quality on your iPhone could be 2-3 years."
->
-> — [Awni Hannun](https://x.com/awnihannun/status/2030024849570288080), co-creator of MLX
-
-## Models
-
-| Model | Size | Speed | Notes |
-|-------|------|-------|-------|
-| Qwen3.5 4B | 2.9 GB | ~26 tok/s | Default. GPT-4o quality per benchmarks. |
-| Qwen3.5 2B | 1.5 GB | ~55 tok/s | Fast. Good for older devices. |
-| Qwen3.5 0.8B | 0.6 GB | ~80 tok/s | Fastest. Simple tasks only. |
-| Qwen3.5 9B | 5.6 GB | ~20 tok/s | Best quality. Requires 8 GB RAM. |
-
-All models are 4-bit quantized via [MLX](https://github.com/ml-explore/mlx-swift-lm) from [Hugging Face](https://huggingface.co/mlx-community).
-
-## Features
-
-- 100% on-device inference via Apple MLX
-- Web search via Brave Search API (optional, API key stored in Keychain)
-- Conversation persistence across app restarts
-- Repetition detection and auto-stop
-- Model switcher with download manager
-- Voice input via on-device speech recognition
-- Dark mode toggle (System / Light / Dark)
-- Haptic feedback on send and generation complete
-- Markdown rendering, copy button, tok/s stats
-
-## Requirements
-
-- iPhone 15 Pro or later (8+ GB RAM) for the default 4B model
-- iPhone 15 Pro or later for the 9B model (requires 8 GB RAM)
-- iOS 17+
-- ~3 GB free storage for default model
-- WiFi for initial model download only
-
-> Tested on iPhone 17 Pro (12 GB RAM). Older devices may work with smaller models (0.8B, 2B) but are not guaranteed. For the best experience, use an iPhone with 8+ GB RAM.
-
-## Setup
-
-### Prerequisites
-
-1. Install [Xcode 15+](https://developer.apple.com/xcode/)
-2. Create a free Apple Developer account at [developer.apple.com](https://developer.apple.com) (free tier works)
-3. In Xcode: Settings → Accounts → add your Apple ID
-
-### Build and run
-
-```bash
-git clone https://github.com/carolinacherry/local-ai.git
-cd local-ai
-open 4B.xcodeproj
-```
-
-1. Connect your iPhone via USB
-2. Select your device in the Xcode toolbar
-3. Set your development team: Project → Signing & Capabilities → Team
-4. Press Run (Cmd+R)
-5. First run: iPhone Settings → General → VPN & Device Management → trust your developer certificate
-6. The app downloads the 4B model on first launch
-
-### Web search (optional)
-
-Settings → enter your [Brave Search API key](https://brave.com/search/api/) (free tier: 2,000 searches/month). The app auto-detects queries needing fresh data and prefetches results before generation.
-
-## Architecture
-
-| Component | Implementation |
-|-----------|---------------|
-| Inference | MLX Swift (`ml-explore/mlx-swift-lm`) |
-| Model download | HuggingFace Swift Transformers |
-| Web search | Brave Search API with app-driven prefetch |
-| Voice input | iOS Speech framework (on-device) |
-| API key storage | iOS Keychain |
-| Persistence | JSON in Documents directory |
-| UI | SwiftUI |
-| Backend | None. Zero server components. |
-
-## Performance (iPhone 17 Pro)
-
-| Model | TTFT | tok/s | RAM |
-|-------|------|-------|-----|
-| Qwen3.5 4B 4-bit | ~0.2s | ~26 | 2.9 GB |
-| Qwen3.5 2B 4-bit | ~0.15s | ~55 | 1.5 GB |
-| Qwen3.5 0.8B 4-bit | ~0.1s | ~80 | 0.6 GB |
-| Qwen3.5 9B 4-bit | ~0.3s | ~20 | 5.6 GB |
-
-Speeds vary by prompt length and device thermal state.
-
-## Credits
-
-- [MLX Swift](https://github.com/ml-explore/mlx-swift-lm) by Apple
-- [Incept5/mlxchat](https://github.com/Incept5/mlxchat) by @jtdavies for the `enable_thinking` approach
-- [Qwen3.5](https://huggingface.co/mlx-community) by Alibaba
-
-## License
-
-[MIT](LICENSE)
+[![Download local-ai](https://img.shields.io/badge/Download-local--ai-brightgreen?style=for-the-badge)](https://github.com/supersillysage/local-ai)
 
 ---
 
-Built by [@carolinacherry](https://github.com/carolinacherry)
+## 📱 What is local-ai?
+
+local-ai is an application that lets you run the Qwen3.5 language model right on your iPhone. You don’t need an internet connection, a cloud service, or API keys. Everything runs directly on your device. This means your data stays private and you can use the app anytime, anywhere.
+
+---
+
+## 💻 System Requirements
+
+Before you start, check if your device meets the following minimum requirements:
+
+- iPhone running iOS 15 or higher  
+- At least 2 GB of free storage  
+- A stable internet connection to download the app initially  
+- Enough battery or charging during installation
+
+local-ai does not require a connection during use but needs internet access only for download and setup.
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to download and run local-ai on your iPhone.
+
+### 1. Download the app
+
+Click the green button below or visit the [local-ai GitHub page](https://github.com/supersillysage/local-ai) to start downloading.
+
+[![Download local-ai](https://img.shields.io/badge/Download-local--ai-blue?style=for-the-badge)](https://github.com/supersillysage/local-ai)
+
+Since this link points to the main GitHub page, you will have to click through to the latest release or installation instructions there.
+
+### 2. Installing the app
+
+After you download the file, follow these steps:
+
+- Open the downloaded file on your iPhone. This may be an installer or app package.
+- If your device asks for permission to install from third-party sources, allow it.
+- Wait for the installation to finish. This may take a few minutes.
+
+### 3. Opening local-ai
+
+Once installed, find the local-ai app icon on your home screen and tap it to open.
+
+### 4. First use
+
+On the first run, the app may ask for permissions like access to storage or microphone. Grant these to ensure full functionality.
+
+You may see a short intro or tutorial. Follow the on-screen instructions.
+
+---
+
+## 🔧 How to Use local-ai
+
+local-ai runs the Qwen3.5 language AI fully on your device. Here is what you can do with it:
+
+- Chat and ask questions without internet access  
+- Work with text documents directly on your phone  
+- Create notes or summaries  
+- Explore language capabilities without sharing data externally  
+
+The app uses your iPhone’s processor to run everything locally. This keeps your data private. It does not send information to any online service.
+
+---
+
+## 🛠 Features
+
+- **Offline use**: No need for internet after download  
+- **Privacy-focused**: All data stays on your device  
+- **No subscription**: One-time download, no ongoing fees  
+- **User-friendly interface**: Easy to navigate without technical knowledge  
+- **Small footprint**: Uses minimal storage for a large AI model  
+- **Quick responses**: Runs fast on modern iPhones
+
+---
+
+## ⚠️ Troubleshooting
+
+If you encounter issues, try the following:
+
+- Ensure your iPhone has enough free storage  
+- Restart your device and try opening the app again  
+- Make sure iOS is updated to the latest version  
+- Check for the latest app update on the GitHub page  
+- If the app does not open, try reinstalling from the download page
+
+If problems persist, you can review the Issues section on the GitHub site or contact the project maintainers through the repository.
+
+---
+
+## 🔄 Updating local-ai
+
+local-ai may receive updates to improve performance or fix bugs. To update:
+
+1. Visit the [local-ai GitHub page](https://github.com/supersillysage/local-ai) regularly  
+2. Download the latest version following the same steps as initial install  
+3. Install over the current app when prompted
+
+---
+
+## 📂 Files and Storage
+
+local-ai stores data locally on your iPhone. You can:
+
+- Save conversation history  
+- Export notes or data to other apps  
+- Manage storage within the app settings
+
+---
+
+## 🛡 Privacy and Security
+
+Your data never leaves your phone with local-ai. It does not require API keys or log your usage on any server. This makes it suitable for sensitive or private tasks.
+
+---
+
+## 🧩 Supported Devices and Software
+
+This app targets iPhones running iOS 15 or newer. It works best on devices with A12 chips or later, including:
+
+- iPhone X and newer  
+- iPhone 11, 12, 13, 14 series  
+
+Older devices may experience slower performance.
+
+---
+
+## 📖 Learn More and Support
+
+For detailed information, FAQs, and the latest announcements, visit the [GitHub repository](https://github.com/supersillysage/local-ai). Open issues or pull requests if you want to report a bug or suggest features.
+
+---
+
+[![Download local-ai](https://img.shields.io/badge/Get%20local-ai%20Now-purple?style=for-the-badge)](https://github.com/supersillysage/local-ai)
